@@ -1,4 +1,4 @@
-!<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -65,9 +65,21 @@
       text-align: center;
     }
 
-    .error-message {
-      color: red;
+    .display-data {
+      margin-top: 30px;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.1);
+    }
+
+    .display-data h3 {
+      text-align: center;
+    }
+
+    .student-info {
       margin-top: 10px;
+      font-size: 16px;
     }
   </style>
 </head>
@@ -109,28 +121,51 @@
   </form>
 </div>
 
+<div class="display-data" id="displayData" style="display:none;">
+  <h3>Registered Student Details</h3>
+  <div class="student-info" id="studentInfo"></div>
+</div>
+
 <script>
   document.getElementById("registrationForm").addEventListener("submit", function(e) {
     e.preventDefault();
 
     const name = document.getElementById("name").value.trim();
     const email = document.getElementById("email").value.trim();
-    const gender = document.querySelector('input[name="gender"]:checked');
+    const genderEl = document.querySelector('input[name="gender"]:checked');
     const course = document.getElementById("course").value;
-
     const messageDiv = document.getElementById("message");
 
-    if (!name || !email || !gender || !course) {
+    if (!name || !email || !genderEl || !course) {
       messageDiv.innerText = "Please fill out all fields.";
       messageDiv.style.color = "red";
       return;
     }
 
-    // You can do more with the data here (like send to server)
-    messageDiv.innerText = `Registration Successful! Welcome, ${name}.`;
+    const gender = genderEl.value;
+
+    const student = {
+      name,
+      email,
+      gender,
+      course
+    };
+
+    messageDiv.innerText = `Registration Successful!`;
     messageDiv.style.color = "green";
 
-    // Optionally clear form
+    const displaySection = document.getElementById("displayData");
+    const studentInfoDiv = document.getElementById("studentInfo");
+
+    studentInfoDiv.innerHTML = `
+      <p><strong>Name:</strong> ${student.name}</p>
+      <p><strong>Email:</strong> ${student.email}</p>
+      <p><strong>Gender:</strong> ${student.gender}</p>
+      <p><strong>Course:</strong> ${student.course}</p>
+    `;
+    displaySection.style.display = "block";
+
+   
     document.getElementById("registrationForm").reset();
   });
 </script>
